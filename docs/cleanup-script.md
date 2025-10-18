@@ -40,6 +40,9 @@ Removes ransom notes from:
 - `C:\Temp\README_DECRYPT.txt`
 - `C:\Users\Public\Desktop\README_DECRYPT.txt`
 
+Removes ransomware payload directory:
+- `C:\AttackLocation\` (entire directory and contents)
+
 ### 5. Registry Cleanup
 
 - Checks `HKCU:\Software\Microsoft\Windows\CurrentVersion\Run`
@@ -68,7 +71,9 @@ Performs comprehensive verification:
 
 - **Operating System**: Windows 10, Windows 11, or Windows Server 2016+
 - **PowerShell**: Version 5.1 or higher
-- **Privileges**: Administrator rights (required)
+- **Privileges**: Administrator rights (required - script auto-elevates if needed)
+
+**Note:** The script will automatically attempt to elevate to Administrator privileges if not already running as admin. If launched without admin rights, it will relaunch itself with elevated privileges.
 
 ### Atomic Red Team
 
@@ -172,6 +177,7 @@ Ransomware simulation environment has been reset.
 | Scheduled Tasks | Task Scheduler | `schtasks /delete` |
 | User Accounts | Local SAM database | `Remove-LocalUser` |
 | Ransom Notes | `C:\Temp\`, Public Desktop | `Remove-Item` |
+| Payload Directory | `C:\AttackLocation\` | `Remove-Item -Recurse` |
 | Registry Keys | `HKCU:\...\Run` | `Remove-Item` |
 | Processes | Running processes | `Stop-Process` |
 | Atomic Artifacts | Various | `Invoke-AtomicTest -Cleanup` |
@@ -226,7 +232,7 @@ Remove-LocalUser -Name "AtomicAdministrator"
 net user AtomicAdministrator /delete
 ```
 
-### 3. Delete Ransom Notes
+### 3. Delete Ransom Notes and Payload Directory
 
 ```powershell
 # Remove from Temp
@@ -234,6 +240,9 @@ Remove-Item "C:\Temp\README_DECRYPT.txt" -Force -ErrorAction SilentlyContinue
 
 # Remove from Public Desktop
 Remove-Item "C:\Users\Public\Desktop\README_DECRYPT.txt" -Force -ErrorAction SilentlyContinue
+
+# Remove attack location directory (ransomware payload)
+Remove-Item "C:\AttackLocation" -Recurse -Force -ErrorAction SilentlyContinue
 
 # Find all README_DECRYPT files
 Get-ChildItem -Path C:\ -Recurse -Filter "*README_DECRYPT*" -ErrorAction SilentlyContinue

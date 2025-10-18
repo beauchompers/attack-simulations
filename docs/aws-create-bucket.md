@@ -191,7 +191,17 @@ The bucket contains five text files with harmless content:
 
 **File:** `my-fun-public-bucket-<timestamp>.txt`
 
-Contains the bucket name for cleanup reference. This file is created in the current directory and should be deleted after cleanup.
+Contains the bucket name and helpful cleanup commands. This file is created in the current directory and should be deleted after cleanup.
+
+**File Contents:**
+```
+Writing my-fun-public-bucket-1234567890 to file
+List all files:
+aws s3 ls s3://my-fun-public-bucket-1234567890/
+
+To delete the bucket later:
+aws s3 rb s3://my-fun-public-bucket-1234567890 --force
+```
 
 ## Observable Security Events
 

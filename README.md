@@ -95,6 +95,7 @@ Demonstrate security control effectiveness:
 |--------|-------------|---------------|
 | **aws-iam-attack.sh** | IAM privilege escalation demo | [📖 Full Documentation](docs/aws-iam-attack.md) |
 | **aws-create-bucket.sh** | Public S3 bucket misconfiguration | [📖 Full Documentation](docs/aws-create-bucket.md) |
+| **aws-create-bucket-2.sh** | Public S3 bucket with mock sensitive data (DLP testing) | [📖 Full Documentation](docs/aws-create-bucket-2.md) |
 
 ### Atomic Red Team Simulations
 
@@ -157,7 +158,28 @@ aws s3 rb s3://<bucket-name> --force
 
 ---
 
-### 3. Ransomware Simulation (Windows)
+### 3. Public S3 Bucket with Sensitive Data (AWS)
+
+**[📖 Full Documentation](docs/aws-create-bucket-2.md)**
+
+Creates a publicly accessible S3 bucket containing mock sensitive data (PII) for DLP testing.
+
+**Quick Start:**
+```bash
+# Same prerequisites as aws-create-bucket.sh
+
+# Run simulation
+./aws/aws-create-bucket-2.sh
+
+# Cleanup
+aws s3 rb s3://<bucket-name> --force
+```
+
+**Detection Opportunities:** DLP alerts, Amazon Macie findings, sensitive data exposure, CASB detection
+
+---
+
+### 4. Ransomware Simulation (Windows)
 
 **[📖 Full Documentation](docs/ransomware-simulation.md)**
 
@@ -253,6 +275,14 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 **Duration:** ~1-2 minutes
 **Cleanup:** Manual
 **[📖 Full Docs](docs/aws-create-bucket.md)**
+
+### AWS: Public S3 Bucket with Sensitive Data
+
+**Purpose:** Test DLP and data exposure detection
+**Techniques:** T1530, Data Exfiltration
+**Duration:** ~1-2 minutes
+**Cleanup:** Manual
+**[📖 Full Docs](docs/aws-create-bucket-2.md)**
 
 ### Windows: Ransomware Simulation
 

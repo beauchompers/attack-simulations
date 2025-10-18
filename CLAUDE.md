@@ -18,7 +18,8 @@ This repository contains defensive security testing scripts for simulating vario
 attack-simulations/
 ├── aws/                           # AWS-based attack simulations
 │   ├── aws-iam-attack.sh         # IAM privilege escalation demo
-│   └── aws-create-bucket.sh      # Public S3 bucket misconfiguration demo
+│   ├── aws-create-bucket.sh      # Public S3 bucket misconfiguration demo
+│   └── aws-create-bucket-2.sh    # Public S3 bucket with mock sensitive data (DLP testing)
 └── atomic-scripts/                # Atomic Red Team based simulations
     └── simple-ransomware-simulation/
         ├── ransomware_simulation.ps1  # Windows ransomware simulation
@@ -76,7 +77,40 @@ Creates a publicly accessible S3 bucket with sample content for testing bucket m
 2. Uploads sample files (jokes, quotes, facts)
 3. Removes block public access settings
 4. Applies public read policy
-5. Creates a `.txt` file with bucket name for tracking
+5. Creates a `.txt` file with bucket name and cleanup commands
+
+**Cleanup**:
+```bash
+aws s3 rb s3://<bucket-name> --force
+```
+
+### aws-create-bucket-2.sh
+Enhanced version that creates a publicly accessible S3 bucket with mock sensitive data for DLP and data exposure testing.
+
+**Usage**:
+```bash
+./aws/aws-create-bucket-2.sh
+```
+
+**Prerequisites**:
+- AWS CLI installed and configured
+- curl (for downloading mock data)
+- Valid AWS credentials with S3 permissions
+
+**What it does**:
+1. Creates S3 bucket with timestamped name
+2. Downloads mock sensitive data CSV (names, SSNs, emails, credit cards - all fake)
+3. Uploads mock data and sample joke file
+4. Removes block public access settings
+5. Applies public read policy
+6. Creates a `.txt` file with bucket name for tracking
+
+**Use Cases**:
+- DLP detection testing
+- Amazon Macie testing
+- Data classification testing
+- CASB detection
+- Incident response exercises for data exposure
 
 **Cleanup**:
 ```bash
@@ -99,9 +133,14 @@ Windows-based ransomware simulation using Atomic Red Team framework.
 
 **Prerequisites**:
 - Windows system
-- PowerShell with Administrator privileges
+- PowerShell 5.1+ (script auto-elevates to Administrator if needed)
 - Internet connection (for Atomic Red Team installation)
-- Optional: Ransomware payload file at `C:\Temp\ransomware.exe`
+- Optional: Ransomware payload file at `C:\AttackLocation\ransomware.exe`
+
+**Auto-Configuration**:
+- Automatically requests admin privileges if not already elevated
+- Auto-installs NuGet package provider if needed
+- Auto-installs Atomic Red Team if not present
 
 **Simulation Phases**:
 1. **Discovery** (Phase 1):
@@ -130,11 +169,15 @@ Cleanup script to remove all artifacts from ransomware simulation.
 .\atomic-scripts\simple-ransomware-simulation\cleanup.ps1
 ```
 
+**Auto-Configuration**:
+- Automatically requests admin privileges if not already elevated
+
 **What it cleans**:
 - Atomic Red Team test artifacts
 - Scheduled tasks
 - User accounts created during simulation
 - Ransom notes
+- `C:\AttackLocation\` directory (ransomware payload location)
 - Registry entries
 - Lingering processes
 

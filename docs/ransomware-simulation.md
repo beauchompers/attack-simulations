@@ -112,32 +112,52 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine
 ```
 
+**Note:** The script will automatically attempt to elevate to Administrator privileges if not already running as admin. If launched without admin rights, it will relaunch itself with elevated privileges.
+
 ### Atomic Red Team Installation
 
-The script will automatically install Atomic Red Team if not present. However, you can pre-install:
+The script will automatically install Atomic Red Team if not present, including:
 
-```powershell
-# Install Atomic Red Team
-IEX (IWR 'https://raw.githubusercontent.com/redcanaryco/invoke-atomicredteam/master/install-atomicredteam.ps1' -UseBasicParsing)
-
-# Install with test atomics
-Install-AtomicRedTeam -getAtomics -Force
-```
+- **NuGet Package Provider** (auto-installed if needed)
+- **Invoke-AtomicRedTeam PowerShell module**
+- **Atomic test definitions** for all MITRE ATT&CK techniques
+- **Test dependencies and prerequisites**
 
 **Installation Location:** `C:\AtomicRedTeam`
 
-**Components Installed:**
-- Invoke-AtomicRedTeam PowerShell module
-- Atomic test definitions for all MITRE ATT&CK techniques
-- Test dependencies and prerequisites
+Manual pre-installation (optional):
+```powershell
+# Install NuGet provider
+Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+
+# Install Atomic Red Team
+IEX (IWR 'https://raw.githubusercontent.com/redcanaryco/invoke-atomicredteam/master/install-atomicredteam.ps1' -UseBasicParsing)
+Install-AtomicRedTeam -getAtomics -Force
+```
 
 ### Optional: Ransomware Sample
 
 For advanced testing, you can place a test ransomware sample:
 
-**Location:** `C:\Temp\ransomware.exe`
+**Location:** `C:\AttackLocation\ransomware.exe`
 
-**Recommended Sources:**
+**WildFire Test Sample:**
+The script includes a variable for the WildFire test malware URL:
+```powershell
+# Included in script
+$malwareUrl = "https://wildfire.paloaltonetworks.com/publicapi/test/pe"
+```
+
+You can manually download and place at `C:\AttackLocation\ransomware.exe`:
+```powershell
+# Create directory
+New-Item -Path "C:\AttackLocation" -ItemType Directory -Force
+
+# Download WildFire test sample (safe for testing)
+Invoke-WebRequest -Uri "https://wildfire.paloaltonetworks.com/publicapi/test/pe" -OutFile "C:\AttackLocation\ransomware.exe"
+```
+
+**Other Recommended Sources:**
 - Palo Alto WildFire test files (safe malware samples)
 - Any.run sandbox samples
 - VirusTotal test files
