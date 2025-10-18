@@ -183,6 +183,13 @@ Cleanup script to remove all artifacts from ransomware simulation.
 
 ## Development Guidelines
 
+**⚠️ MANDATORY DOCUMENTATION REQUIREMENT**:
+Before considering ANY script addition or modification complete, you MUST:
+1. Create or update the corresponding `docs/<script-name>.md` file
+2. Update README.md with the script information
+3. Update this CLAUDE.md file
+Failure to update all three locations means the task is NOT complete.
+
 ### Adding New AWS Simulations
 
 1. Place scripts in `aws/` directory
@@ -224,28 +231,47 @@ Cleanup script to remove all artifacts from ransomware simulation.
 ### Required Documentation Updates
 
 1. **When Adding New Scripts**:
-   - Add a new section to [README.md](README.md) with:
-     - Script purpose and use case
+   - **ALWAYS create a detailed documentation file** in `docs/<script-name>.md` with:
+     - Script purpose and detailed description
      - MITRE ATT&CK techniques covered
-     - Complete usage instructions with examples
-     - All prerequisites and dependencies
-     - Required permissions (IAM for AWS, local admin for Windows)
-     - Observable security events generated
-     - Cleanup instructions
+     - Prerequisites and installation instructions
+     - Step-by-step usage instructions with examples
+     - Required permissions (IAM policies for AWS, admin rights for Windows)
+     - Observable security events and SIEM queries
+     - Comprehensive troubleshooting guide
+     - Testing scenarios and use cases
      - Safety notes and warnings
-   - Add corresponding section to this CLAUDE.md file with:
-     - Quick reference usage
-     - Key technical details
-     - Development patterns used
+
+   - **Update [README.md](README.md)**:
+     - Add script to "Available Scripts" table with link to detailed docs
+     - Add script to "Quick Start Guide" section with basic usage
+     - Add script to "Script Overview" section with summary
+
+   - **Update this [CLAUDE.md](CLAUDE.md) file**:
+     - Add to Repository Structure section
+     - Add quick reference usage section
+     - Document key technical details
+     - Note any development patterns used
 
 2. **When Modifying Existing Scripts**:
-   - Update README.md to reflect any changes in:
-     - Usage syntax or parameters
-     - Prerequisites or dependencies
-     - Generated events or artifacts
-     - Cleanup procedures
-   - Update CLAUDE.md if architectural patterns change
-   - Update code comments explaining the modifications
+   - **Update the script's documentation file** in `docs/<script-name>.md`:
+     - Update usage syntax or parameters
+     - Update prerequisites or dependencies
+     - Update generated events or artifacts
+     - Update cleanup procedures
+     - Add new troubleshooting sections if needed
+
+   - **Update [README.md](README.md)** if changes affect:
+     - Quick start commands
+     - Script description or purpose
+     - Prerequisites summary
+
+   - **Update [CLAUDE.md](CLAUDE.md)** if:
+     - Architectural patterns change
+     - New auto-configuration features added
+     - Script behavior significantly changes
+
+   - **Update code comments** explaining the modifications
 
 3. **Documentation Standards**:
    - Keep README.md user-focused (how to use, what it does)
