@@ -8,41 +8,7 @@ A collection of controlled attack simulation scripts designed for cybersecurity 
 
 This repository contains security testing tools that simulate malicious behavior for **DEFENSIVE PURPOSES ONLY**.
 
-### Authorized Use Only
-
-These scripts are provided exclusively for:
-- Security professionals testing detection and response capabilities
-- Organizations validating their security monitoring and alerting
-- Security teams developing and testing detection rules
-- Incident response teams conducting training exercises
-- Penetration testers with written authorization from the target organization
-- Security researchers in controlled, authorized environments
-
-### Prohibited Uses
-
-**DO NOT USE THESE SCRIPTS**:
-- Against systems you do not own or have explicit written authorization to test
-- In production environments without proper approval and safety measures
-- For malicious purposes or unauthorized access
-- To cause harm, disruption, or data loss
-- In violation of any applicable laws or regulations
-
-### Legal Notice
-
-By using these scripts, you acknowledge and agree that:
-
-1. You have proper authorization to test the target systems
-2. You understand the potential impact of running these simulations
-3. You accept full responsibility for any consequences of use or misuse
-4. The repository maintainers are not liable for any damages, legal consequences, or other issues arising from the use of these tools
-5. You will comply with all applicable laws, regulations, and organizational policies
-
-**Unauthorized access to computer systems is illegal under laws including but not limited to:**
-- Computer Fraud and Abuse Act (CFAA) in the United States
-- Computer Misuse Act in the United Kingdom
-- Equivalent legislation in other jurisdictions
-
-**Use at your own risk. Always obtain proper authorization before testing.**
+**⚠️ Unauthorized use is illegal and unethical. [Read full legal terms](#full-legal-disclaimer) before proceeding.**
 
 ---
 
@@ -410,6 +376,46 @@ See [CLAUDE.md](CLAUDE.md) for detailed development guidelines.
 ### Windows Security
 - [Sysmon](https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon)
 - [Windows Event Logging](https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/security-auditing-overview)
+
+---
+
+## Full Legal Disclaimer
+
+### Authorized Use Only
+
+These scripts are provided exclusively for:
+- Security professionals testing detection and response capabilities
+- Organizations validating their security monitoring and alerting
+- Security teams developing and testing detection rules
+- Incident response teams conducting training exercises
+- Penetration testers with written authorization from the target organization
+- Security researchers in controlled, authorized environments
+
+### Prohibited Uses
+
+**DO NOT USE THESE SCRIPTS**:
+- Against systems you do not own or have explicit written authorization to test
+- In production environments without proper approval and safety measures
+- For malicious purposes or unauthorized access
+- To cause harm, disruption, or data loss
+- In violation of any applicable laws or regulations
+
+### Legal Notice
+
+By using these scripts, you acknowledge and agree that:
+
+1. You have proper authorization to test the target systems
+2. You understand the potential impact of running these simulations
+3. You accept full responsibility for any consequences of use or misuse
+4. The repository maintainers are not liable for any damages, legal consequences, or other issues arising from the use of these tools
+5. You will comply with all applicable laws, regulations, and organizational policies
+
+**Unauthorized access to computer systems is illegal under laws including but not limited to:**
+- Computer Fraud and Abuse Act (CFAA) in the United States
+- Computer Misuse Act in the United Kingdom
+- Equivalent legislation in other jurisdictions
+
+**Use at your own risk. Always obtain proper authorization before testing.**
 
 ---
 
