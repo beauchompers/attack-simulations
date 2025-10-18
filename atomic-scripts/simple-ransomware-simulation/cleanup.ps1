@@ -2,6 +2,21 @@
 
 Write-Host "Ransomware Simulation Cleanup" -ForegroundColor Yellow
 
+# VARIABLES
+# Folder location of the ransomware payload to cleanup
+$exePath = "C:\AttackLocation"
+
+# Check for Administrator privileges
+Write-Host "Checking for Admin...." -ForegroundColor Green
+
+if (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+    # Re-launch the script with elevated privileges
+    Write-Host "Relaunching with Admin!" -ForegroundColor Green
+    Start-Process powershell.exe -Verb RunAs -ArgumentList "-ExecutionPolicy Bypass -File `"$PSCommandPath`""
+    Read-Host -Prompt "Press Enter to exit"
+    Exit  
+}
+
 # Check if Atomic Red Team is available for cleanup commands
 $AtomicPath = "C:\AtomicRedTeam"
 $ModulePath = "$AtomicPath\invoke-atomicredteam\Invoke-AtomicRedTeam.psd1"
@@ -19,16 +34,16 @@ if (Test-Path $ModulePath) {
 Write-Host "`nCleaning up Phase 1: Discovery..." -ForegroundColor Cyan
 if ($AtomicAvailable) {
     try {
-        Write-Host "  Cleaning up T1082..." -ForegroundColor Gray
+        Write-Host "    Cleaning up T1082..." -ForegroundColor Gray
         Invoke-AtomicTest T1082 -TestNumbers 1 -Cleanup
-        Write-Host "  T1082 cleanup completed" -ForegroundColor Green
+        Write-Host "    T1082 cleanup completed" -ForegroundColor Green
     } catch {
-        Write-Warning "  T1082 cleanup failed: $_"
+        Write-Warning "     T1082 cleanup failed: $_"
     }
 }
 
 # Manual cleanup for T1087.001 (no atomic cleanup needed - was manual commands)
-Write-Host "  T1087.001 was manual commands - no cleanup needed" -ForegroundColor Gray
+Write-Host "    T1087.001 was manual commands - no cleanup needed" -ForegroundColor Gray
 
 # Cleanup Phase 2: Persistence
 Write-Host "`nCleaning up Phase 2: Persistence..." -ForegroundColor Cyan
@@ -36,11 +51,11 @@ Write-Host "`nCleaning up Phase 2: Persistence..." -ForegroundColor Cyan
 # Clean up T1053.005 - Scheduled Task Creation
 if ($AtomicAvailable) {
     try {
-        Write-Host "  Cleaning up T1053.005..." -ForegroundColor Gray
+        Write-Host "    Cleaning up T1053.005..." -ForegroundColor Gray
         Invoke-AtomicTest T1053.005 -TestNumbers 1 -Cleanup
-        Write-Host "  T1053.005 cleanup completed" -ForegroundColor Green
+        Write-Host "    T1053.005 cleanup completed" -ForegroundColor Green
     } catch {
-        Write-Warning "  T1053.005 cleanup failed: $_"
+        Write-Warning "     T1053.005 cleanup failed: $_"
     }
 }
 
@@ -59,11 +74,11 @@ if ($atomicTasks) {
 # Clean up T1136.001 - Create Local Account
 if ($AtomicAvailable) {
     try {
-        Write-Host "  Cleaning up T1136.001..." -ForegroundColor Gray
+        Write-Host "    Cleaning up T1136.001..." -ForegroundColor Gray
         Invoke-AtomicTest T1136.001 -TestNumbers 5 -Cleanup
-        Write-Host "  T1136.001 cleanup completed" -ForegroundColor Green
+        Write-Host "    T1136.001 cleanup completed" -ForegroundColor Green
     } catch {
-        Write-Warning "  T1136.001 cleanup failed: $_"
+        Write-Warning "     T1136.001 cleanup failed: $_"
     }
 }
 
@@ -83,23 +98,35 @@ if ($suspiciousUsers) {
 Write-Host "`nCleaning up Phase 3: Impact..." -ForegroundColor Cyan
 
 # Remove ransom notes
-Write-Host "  Removing ransom notes..." -ForegroundColor Gray
+Write-Host "    Removing ransom notes..." -ForegroundColor Gray
 $ransomNoteLocations = @(
-    "C:\Temp\README_DECRYPT.txt",
+    "C:\AttackLocation\README_DECRYPT.txt",
     "$env:PUBLIC\Desktop\README_DECRYPT.txt"
 )
 foreach ($ransomNote in $ransomNoteLocations) {
     if (Test-Path $ransomNote) {
         Remove-Item $ransomNote -Force
-        Write-Host "    Removed: $ransomNote" -ForegroundColor Yellow
+        Write-Host "    Removed: $ransomNote" -ForegroundColor Green
+    } else {
+        Write-Host "    Not found and moving on: $ransomNote" -ForegroundColor Green
     }
+}
+
+# Remove the ransomware file
+if (Test-Path -Path $exePath -PathType Container) {
+    Write-Host "    Folder '$exePath' found. Removing..." -ForegroundColor Gray
+    # Remove the folder and all its contents forcefully and without confirmation
+    Remove-Item -Path $exePath -Recurse -Force -ErrorAction SilentlyContinue
+    Write-Host "    Folder '$exePath' and its contents have been removed." -ForegroundColor Green
+} else {
+    Write-Host "    Folder '$exePath' not found. No action taken." -ForegroundColor Green
 }
 
 # Additional manual cleanup
 Write-Host "`nPerforming additional cleanup..." -ForegroundColor Cyan
 
 # Clean up any leftover registry entries
-Write-Host "  Checking for atomic registry entries..." -ForegroundColor Gray
+Write-Host "    Checking for atomic registry entries..." -ForegroundColor Gray
 try {
     $atomicRegKeys = Get-ChildItem "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run" -ErrorAction SilentlyContinue | Where-Object {$_.Name -like "*Atomic*"}
     if ($atomicRegKeys) {
@@ -111,11 +138,11 @@ try {
         Write-Host "    No atomic registry entries found" -ForegroundColor Green
     }
 } catch {
-    Write-Warning "  Could not check registry entries: $_"
+    Write-Warning "     Could not check registry entries: $_"
 }
 
 # Clean up any leftover processes
-Write-Host "  Checking for leftover processes..." -ForegroundColor Gray
+Write-Host "    Checking for leftover processes..." -ForegroundColor Gray
 $suspiciousProcesses = Get-Process | Where-Object {$_.ProcessName -like "*atomic*" -or $_.ProcessName -like "*mimikatz*" -or $_.ProcessName -like "*ransom*"}
 if ($suspiciousProcesses) {
     foreach ($proc in $suspiciousProcesses) {
@@ -156,3 +183,5 @@ if ($remainingIssues.Count -eq 0) {
 
 Write-Host "`nCleanup Complete!" -ForegroundColor Green
 Write-Host "Ransomware simulation environment has been reset." -ForegroundColor Cyan
+Read-Host -Prompt "Press Enter to exit"
+Exit  

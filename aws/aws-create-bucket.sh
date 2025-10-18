@@ -185,6 +185,11 @@ rm -rf $TEMP_DIR
 
 # Save to file for demo purposes
 echo "Writing $BUCKET_NAME to file" >> "${BUCKET_NAME}.txt"
+echo "List all files:" >> "${BUCKET_NAME}.txt"
+echo "aws s3 ls s3://$BUCKET_NAME/" >> "${BUCKET_NAME}.txt"
+echo "" >> "${BUCKET_NAME}.txt"
+echo "To delete the bucket later:" >> "${BUCKET_NAME}.txt"
+echo "aws s3 rb s3://$BUCKET_NAME --force" >> "${BUCKET_NAME}.txt"
 
 echo -e "${GREEN}✅ Success! Your fun public S3 bucket is ready!${NC}"
 echo ""
