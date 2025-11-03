@@ -1,2 +1,5 @@
 *.DS_Store*
 *.txt
+
+# Visual Studio Code
+*.code-workspace
