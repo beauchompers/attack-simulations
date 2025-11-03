@@ -167,7 +167,39 @@ If no file exists at this path, the script skips payload execution (other phases
 
 ## Usage
 
-### Basic Usage
+### Option 1: Standalone Batch File (Recommended for Demos)
+
+The easiest way to run the simulation is using the standalone batch file, which downloads and executes the PowerShell script directly from GitHub:
+
+**Script:** [atomic-scripts/simple-ransomware-simulation/run_ransomware_simulation.bat](../atomic-scripts/simple-ransomware-simulation/run_ransomware_simulation.bat)
+
+```batch
+# Download the batch file from GitHub and save it anywhere on your Windows system
+# Then simply double-click it or run from Command Prompt:
+
+# Run with default 120-second delays
+run_ransomware_simulation.bat
+
+# Run with custom delay (60 seconds)
+run_ransomware_simulation.bat 60
+```
+
+**Benefits:**
+- ✅ No local PowerShell files needed
+- ✅ Always runs the latest version from GitHub
+- ✅ Perfect for security demonstrations and training
+- ✅ Mimics real-world attack delivery methods
+- ✅ Simpler for non-technical users
+
+**How it works:**
+1. Downloads PowerShell script from GitHub raw URL
+2. Executes script in memory using `Invoke-Expression`
+3. Script automatically elevates to Administrator (UAC prompt)
+4. All phases execute as normal
+
+**GitHub URL:** `https://raw.githubusercontent.com/beauchompers/attack-simulations/main/atomic-scripts/simple-ransomware-simulation/ransomware_simulation.ps1`
+
+### Option 2: PowerShell Direct Execution
 
 Run with default settings (120-second delays):
 

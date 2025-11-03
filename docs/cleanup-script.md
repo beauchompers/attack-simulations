@@ -86,7 +86,34 @@ Test-Path C:\AtomicRedTeam\invoke-atomicredteam\Invoke-AtomicRedTeam.psd1
 
 ## Usage
 
-### Basic Usage
+### Option 1: Standalone Batch File (Recommended for Demos)
+
+The easiest way to run cleanup is using the standalone batch file, which downloads and executes the PowerShell script directly from GitHub:
+
+**Script:** [atomic-scripts/simple-ransomware-simulation/run_cleanup.bat](../atomic-scripts/simple-ransomware-simulation/run_cleanup.bat)
+
+```batch
+# Download the batch file from GitHub and save it anywhere on your Windows system
+# Then simply double-click it or run from Command Prompt:
+
+run_cleanup.bat
+```
+
+**Benefits:**
+- ✅ No local PowerShell files needed
+- ✅ Always runs the latest cleanup version from GitHub
+- ✅ Perfect for security demonstrations and training
+- ✅ Simpler for non-technical users
+
+**How it works:**
+1. Downloads cleanup script from GitHub raw URL
+2. Executes script in memory using `Invoke-Expression`
+3. Script automatically elevates to Administrator (UAC prompt)
+4. Performs comprehensive cleanup
+
+**GitHub URL:** `https://raw.githubusercontent.com/beauchompers/attack-simulations/main/atomic-scripts/simple-ransomware-simulation/cleanup.ps1`
+
+### Option 2: PowerShell Direct Execution
 
 Run the cleanup script after completing the ransomware simulation:
 

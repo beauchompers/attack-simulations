@@ -69,6 +69,8 @@ Demonstrate security control effectiveness:
 |--------|-------------|---------------|
 | **ransomware_simulation.ps1** | Multi-phase ransomware attack simulation | [📖 Full Documentation](docs/ransomware-simulation.md) |
 | **cleanup.ps1** | Cleanup script for ransomware simulation | [📖 Full Documentation](docs/cleanup-script.md) |
+| **run_ransomware_simulation.bat** | Standalone batch launcher (downloads from GitHub) | [📖 Full Documentation](docs/ransomware-simulation.md) |
+| **run_cleanup.bat** | Standalone cleanup batch launcher (downloads from GitHub) | [📖 Full Documentation](docs/cleanup-script.md) |
 
 ---
 
@@ -151,7 +153,22 @@ aws s3 rb s3://<bucket-name> --force
 
 Multi-phase ransomware attack using Atomic Red Team framework.
 
-**Quick Start:**
+**Quick Start (Option 1: Standalone Batch Files - Recommended for Demos):**
+```batch
+# Download and run the batch file from GitHub
+# The batch file will automatically download and execute the PowerShell script
+
+# Run simulation with default 120-second delay
+run_ransomware_simulation.bat
+
+# Run with custom delay (60 seconds)
+run_ransomware_simulation.bat 60
+
+# Cleanup
+run_cleanup.bat
+```
+
+**Quick Start (Option 2: PowerShell Direct):**
 ```powershell
 # Set execution policy (as Administrator)
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser

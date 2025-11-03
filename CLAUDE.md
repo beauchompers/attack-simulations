@@ -22,8 +22,10 @@ attack-simulations/
 │   └── aws-create-bucket-2.sh    # Public S3 bucket with mock sensitive data (DLP testing)
 └── atomic-scripts/                # Atomic Red Team based simulations
     └── simple-ransomware-simulation/
-        ├── ransomware_simulation.ps1  # Windows ransomware simulation
-        └── cleanup.ps1                # Cleanup script for simulation
+        ├── ransomware_simulation.ps1       # Windows ransomware simulation
+        ├── cleanup.ps1                     # Cleanup script for simulation
+        ├── run_ransomware_simulation.bat   # Standalone batch launcher (downloads from GitHub)
+        └── run_cleanup.bat                 # Standalone cleanup batch launcher (downloads from GitHub)
 ```
 
 ## AWS Attack Simulations
@@ -122,7 +124,19 @@ aws s3 rb s3://<bucket-name> --force
 ### ransomware_simulation.ps1
 Windows-based ransomware simulation using Atomic Red Team framework.
 
-**Usage**:
+**Usage (Option 1: Standalone Batch File - Recommended for Demos)**:
+```batch
+# Download and run the batch file - it will automatically download the PowerShell script from GitHub
+# Perfect for security demonstrations and training
+
+# Run with default 120 second delays between phases
+run_ransomware_simulation.bat
+
+# Run with custom delay (in seconds)
+run_ransomware_simulation.bat 60
+```
+
+**Usage (Option 2: PowerShell Direct)**:
 ```powershell
 # Run with default 120 second delays between phases
 .\atomic-scripts\simple-ransomware-simulation\ransomware_simulation.ps1
@@ -161,10 +175,59 @@ Windows-based ransomware simulation using Atomic Red Team framework.
 
 **Atomic Red Team Installation**: Script auto-installs Atomic Red Team if not present at `C:\AtomicRedTeam`.
 
+### run_ransomware_simulation.bat
+Standalone batch file launcher for security demonstrations and training.
+
+**Key Features**:
+- Downloads PowerShell script directly from GitHub raw URL
+- Executes script in memory (no local PowerShell files needed)
+- Supports custom delay parameter
+- Perfect for quick security demonstrations
+- Mimics real-world attack delivery methods
+
+**Usage**:
+```batch
+# Run with default 120-second delay
+run_ransomware_simulation.bat
+
+# Run with custom delay (60 seconds)
+run_ransomware_simulation.bat 60
+```
+
+**Technical Details**:
+- GitHub URL: `https://raw.githubusercontent.com/beauchompers/attack-simulations/main/atomic-scripts/simple-ransomware-simulation/ransomware_simulation.ps1`
+- Uses PowerShell `-ExecutionPolicy Bypass` to avoid policy restrictions
+- Downloads and executes script using `New-Object Net.WebClient` and `Invoke-Expression`
+- Automatically triggers UAC elevation via the PowerShell script
+
+### run_cleanup.bat
+Standalone batch file launcher for cleanup operations.
+
+**Key Features**:
+- Downloads cleanup script directly from GitHub raw URL
+- Executes script in memory
+- Simplifies cleanup process for demonstrations
+
+**Usage**:
+```batch
+run_cleanup.bat
+```
+
+**Technical Details**:
+- GitHub URL: `https://raw.githubusercontent.com/beauchompers/attack-simulations/main/atomic-scripts/simple-ransomware-simulation/cleanup.ps1`
+- Uses same execution approach as ransomware simulation launcher
+- Automatically triggers UAC elevation via the PowerShell script
+
 ### cleanup.ps1
 Cleanup script to remove all artifacts from ransomware simulation.
 
-**Usage**:
+**Usage (Option 1: Standalone Batch File - Recommended for Demos)**:
+```batch
+# Download and run the batch file - it will automatically download the cleanup script from GitHub
+run_cleanup.bat
+```
+
+**Usage (Option 2: PowerShell Direct)**:
 ```powershell
 .\atomic-scripts\simple-ransomware-simulation\cleanup.ps1
 ```
